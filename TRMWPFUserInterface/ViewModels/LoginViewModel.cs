@@ -1,9 +1,11 @@
 ﻿using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TRMWPFUserInterface.Helpers;
 
 namespace TRMWPFUserInterface.ViewModels
 {
@@ -11,7 +13,11 @@ namespace TRMWPFUserInterface.ViewModels
     {
         private string _userName;
         private string _password;
-
+        private IApiHelper _apiHelper;
+        public LoginViewModel(IApiHelper apiHelper)
+        {
+            _apiHelper = apiHelper;
+        }
         public string UserName
         {
             get { return _userName; }
@@ -19,7 +25,7 @@ namespace TRMWPFUserInterface.ViewModels
             {
                 _userName = value;
                 NotifyOfPropertyChange(() => UserName);
-                NotifyOfPropertyChange(() => CanLogIn);
+                
             }
         }
 
@@ -39,7 +45,7 @@ namespace TRMWPFUserInterface.ViewModels
             get
             {
                 bool output = false;
-
+                
                 if (UserName?.Length > 0 && Password?.Length > 0)
                 {
                     output = true;
@@ -49,9 +55,16 @@ namespace TRMWPFUserInterface.ViewModels
             }
         }
 
-        public void LogIn(string userName, string password)
+        public async Task LogIn()
         {
-            Console.WriteLine();
+            try
+            {
+                var result = await _apiHelper.Authenticate(UserName, Password);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
         }
 
     }
