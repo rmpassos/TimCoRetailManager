@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using TRMWPFUI.Library.Helpers.API;
+using TRMWPFUI.Library.Models;
 using TRMWPFUserInterface.Helpers;
 using TRMWPFUserInterface.ViewModels;
 
@@ -31,7 +33,8 @@ namespace TRMWPFUserInterface
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
-                .Singleton<IApiHelper, ApiHelper>();
+                .Singleton<IApiHelper, ApiHelper>()
+                .Singleton<ILoggedInUserModel, LoggedInUserModel>();
             
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)

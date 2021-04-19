@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
-using TRMWPFUserInterface.Models;
+using TRMWPFUI.Library.Models;
 
-namespace TRMWPFUserInterface.Helpers
+namespace TRMWPFUI.Library.Helpers.API
 {
     public interface IApiHelper
     {
         Task<AuthenticatedUser> Authenticate(string username, string password);
+
+        Task GetLoggedInUserInfo(string token);
     }
 }
