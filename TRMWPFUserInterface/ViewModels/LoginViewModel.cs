@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TRMWPFUI.Library.Helpers.API;
-
+using TRMWPFUserInterface.EventModels;
 
 namespace TRMWPFUserInterface.ViewModels
 {
@@ -15,9 +15,11 @@ namespace TRMWPFUserInterface.ViewModels
         private string _userName;
         private string _password;
         private IApiHelper _apiHelper;
-        public LoginViewModel(IApiHelper apiHelper)
+        IEventAggregator _events;
+        public LoginViewModel(IApiHelper apiHelper, IEventAggregator events)
         {
             _apiHelper = apiHelper;
+            _events = events;
         }
         public string UserName
         {
@@ -90,6 +92,8 @@ namespace TRMWPFUserInterface.ViewModels
                 ErrorMessage = "";
                 var result = await _apiHelper.Authenticate(UserName, Password);
                 await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
+
+                _events.PublishOnUIThread(new LogOnEvent());
             }
             catch (Exception ex)
             {
